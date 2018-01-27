@@ -1,29 +1,45 @@
 package validation;
 
-import java.util.LinkedList;
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Validation {
-	public boolean isLineCorrect(Map<Integer, LinkedList<String>> lines) {
-		for (Integer line : lines.keySet()) {
-			for (String word : lines.get(line)) {
-				if (word.startsWith(" ") || word.startsWith("\u0009")) {
-					System.out.printf("Line %d start with space or tab.\n", line + 1);
-					return false;
-				}
-			}
+
+	public boolean isFileCorrect(File file) throws FileNotFoundException {
+		if (!isLineCorrect(file) || !isNumberCorrect(file)) {
+			System.out.println("Content is not correct.");
+			return false;
 		}
 		return true;
 	}
 
-	public boolean isNumberCorrect(Map<Integer, LinkedList<String>> lines) {
-		for (Integer line : lines.keySet()) {
-			for (String word : lines.get(line)) {
+	public boolean isLineCorrect(File file) throws FileNotFoundException {
+		Scanner input = new Scanner(file);
+		int line = 1;
+		while (input.hasNextLine()) {
+			String sentence = input.nextLine();
+			if (sentence.startsWith(" ") || sentence.startsWith("\u0009")) {
+				System.out.printf("Line %d start with space or tab.\n", line);
+				return false;
+			}
+			line++;
+		}
+		return true;
+	}
+
+	public boolean isNumberCorrect(File file) throws FileNotFoundException {
+		Scanner input = new Scanner(file);
+		int line = 1;
+		while (input.hasNextLine()) {
+			String[] words = input.nextLine().split(" ");
+			for (String word : words) {
 				if (word.startsWith("0")) {
-					System.out.printf("At line <%d>, character<%s> starts with 0.\n", line + 1, word);
+					System.out.printf("At line <%d>, character<%s> starts with 0.\n", line, word);
 					return false;
 				}
 			}
+			line++;
 		}
 		return true;
 	}

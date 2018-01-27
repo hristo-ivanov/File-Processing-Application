@@ -11,27 +11,36 @@ import java.util.Scanner;
 import crud.Crud;
 import validation.Validation;
 
-public class Files {
+public class Files extends Crud {
 
-	public String enterFilePath(Map<Integer, LinkedList<String>> lines) {
-		String filepath = "";
+	public Map<Integer, LinkedList<String>> lines = new HashMap<Integer, LinkedList<String>>();
+	public String filepath = "";
+	public static boolean isReadyToGo = false;
+	public File file;
+	
+	Validation validator = new Validation();
+	Crud c = new Crud();
+
+	public void enterFilePath() throws FileNotFoundException {
 		boolean isCorrect = false;
 		while (!isCorrect) {
-			Scanner scanner = new Scanner(System.in);
-			System.out.print("Enter file path: ");
-			filepath = scanner.nextLine();
-			File file = new File(filepath);
 			try {
-				copyContentFromFile(lines, file);
+				Scanner scanner = new Scanner(System.in);
+				System.out.print("Enter file path: ");
+				filepath = scanner.nextLine();
+				file = new File(filepath);
+				if (validator.isFileCorrect(file)) {
+					copyContentFromFile();
+					isReadyToGo = true;
+				}
 				isCorrect = true;
 			} catch (FileNotFoundException e) {
-				System.out.println("File not found.");
+				System.out.println("File is not found.");
 			}
 		}
-		return filepath;
 	}
 
-	public void copyContentFromFile(Map<Integer, LinkedList<String>> lines, File file) throws FileNotFoundException {
+	public void copyContentFromFile() throws FileNotFoundException {
 		Scanner scanner = new Scanner(file);
 		int line = 0;
 		while (scanner.hasNextLine()) {
@@ -58,7 +67,7 @@ public class Files {
 		System.out.print("Make your choise: ");
 	}
 
-	public void switchTwoLines(Map<Integer, LinkedList<String>> lines) {
+	public void switchTwoLines() {
 
 		Scanner console = new Scanner(System.in);
 		System.out.print("Enter first line index: ");
@@ -78,7 +87,7 @@ public class Files {
 		}
 	}
 
-	public void switchTwoNumbersFromDiffLines(Map<Integer, LinkedList<String>> lines) {
+	public void switchTwoNumbersFromDiffLines() {
 		try {
 			Scanner console = new Scanner(System.in);
 			System.out.print("Enter first line index and first line number index: ");
@@ -99,9 +108,8 @@ public class Files {
 		}
 	}
 
-	public void copyContentToFile(Map<Integer, LinkedList<String>> lines, String filepath)
-			throws FileNotFoundException {
-		File file = new File(filepath);
+	public void copyContentToFile() throws FileNotFoundException {
+		file = new File(filepath);
 		PrintWriter output = new PrintWriter(file);
 		for (Integer line : lines.keySet()) {
 			for (String word : lines.get(line)) {
@@ -112,46 +120,45 @@ public class Files {
 		output.close();
 	}
 
-	public static void main(String[] args) throws Exception {
-		Files files = new Files();
-		Crud crud = new Crud();
-		Validation validator = new Validation();
-		Map<Integer, LinkedList<String>> lines = new HashMap<Integer, LinkedList<String>>();
-		String filepath = files.enterFilePath(lines);
+	public void start() throws FileNotFoundException {
 		Scanner console = new Scanner(System.in);
-		int choosenOption = 0;
+		int option;
 		do {
-			files.showMenu();
-			choosenOption = Integer.parseInt(console.nextLine());
-			switch (choosenOption) {
+			showMenu();
+			option = Integer.parseInt(console.nextLine());
+			switch (option) {
 			case 1:
-				if (validator.isNumberCorrect(lines) && validator.isLineCorrect(lines)) {
-					files.switchTwoLines(lines);
-				}
+				switchTwoLines();
 				break;
 			case 2:
-				if (validator.isNumberCorrect(lines) && validator.isLineCorrect(lines)) {
-					files.switchTwoNumbersFromDiffLines(lines);
-				}
+				switchTwoNumbersFromDiffLines();
 				break;
 			case 3:
-				crud.insertNumber(lines);
+				c.insertNumber(lines);
 				break;
 			case 4:
-				crud.readNumber(lines);
+				c.readNumber(lines);
 				break;
 			case 5:
-				crud.modifyNumber(lines);
+				c.modifyNumber(lines);
 				break;
 			case 6:
-				crud.removeNumber(lines);
+				c.removeNumber(lines);
 				break;
 			case 0:
-				files.copyContentToFile(lines, filepath);
+				copyContentToFile();
 				break;
 			default:
 				System.out.println("Invalid option.");
 			}
-		} while (choosenOption != 0);
+		} while (option != 0);
+	}
+
+	public static void main(String[] args) throws Exception {
+		Files files = new Files();
+		files.enterFilePath();
+		if (isReadyToGo) {
+			files.start();
+		}
 	}
 }
