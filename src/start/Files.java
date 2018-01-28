@@ -15,13 +15,13 @@ public class Files extends Crud {
 
 	public Map<Integer, LinkedList<String>> lines = new HashMap<Integer, LinkedList<String>>();
 	public String filepath = "";
-	public static boolean isReadyToGo = false;
 	public File file;
-	
+	private static boolean isReadyToGo = false;
+
 	Validation validator = new Validation();
 	Crud c = new Crud();
 
-	public void enterFilePath() throws FileNotFoundException {
+	public void enterFilePath() {
 		boolean isCorrect = false;
 		while (!isCorrect) {
 			try {
@@ -42,7 +42,7 @@ public class Files extends Crud {
 
 	public void copyContentFromFile() throws FileNotFoundException {
 		Scanner scanner = new Scanner(file);
-		int line = 0;
+		int line = 1;
 		while (scanner.hasNextLine()) {
 			lines.put(line, new LinkedList<String>());
 			String[] words = scanner.nextLine().split(" ");
@@ -97,7 +97,7 @@ public class Files extends Crud {
 			int secondLineIndex = console.nextInt();
 			int secondNumberIndex = console.nextInt();
 
-			String firstValue = lines.get(firstLineIndex - 1).get(firstNumberIndex - 1);
+			String firstValue =lines.get(firstLineIndex - 1).get(firstNumberIndex - 1);
 			String secondValue = lines.get(secondLineIndex - 1).get(secondNumberIndex - 1);
 			lines.get(firstLineIndex - 1).remove(firstNumberIndex - 1);
 			lines.get(secondLineIndex - 1).remove(secondNumberIndex - 1);

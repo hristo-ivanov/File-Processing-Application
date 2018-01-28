@@ -4,28 +4,25 @@ import static java.lang.System.out;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
+
 import validation.Validation;;
 
 public class Crud {
-	public int lineIndex;
-	public int numberIndex;
-	public String numberToBeInserted;
-	public String numberToBeShown;
-	public String numberToBeImproved;
+
 	Validation validator = new Validation();
-	Scanner input = new Scanner(System.in);
+	Scanner console = new Scanner(System.in);
 
 	public void insertNumber(Map<Integer, LinkedList<String>> lines) {
 		try {
 			out.print("Enter line index: ");
-			lineIndex = Integer.parseInt(input.nextLine());
+			int lineIndex = Integer.parseInt(console.nextLine());
 			out.print("Enter number index: ");
-			numberIndex = Integer.parseInt(input.nextLine());
+			int numberIndex = Integer.parseInt(console.nextLine());
 			out.print("Number to be inserted: ");
-			numberToBeInserted = input.nextLine();
+			String numberToBeInserted = console.nextLine();
 
 			if (validator.isANumber(numberToBeInserted)) {
-				lines.get(lineIndex - 1).add(numberIndex - 1, numberToBeInserted);
+				lines.get(lineIndex).add(numberIndex - 1, numberToBeInserted);
 			} else {
 				out.println("This is not a number.");
 			}
@@ -37,11 +34,11 @@ public class Crud {
 	public void readNumber(Map<Integer, LinkedList<String>> lines) {
 		try {
 			out.print("Enter line index: ");
-			lineIndex = input.nextInt();
+			int lineIndex = console.nextInt();
 			out.print("Enter number index: ");
-			numberIndex = input.nextInt();
+			int numberIndex = console.nextInt();
 
-			numberToBeShown = lines.get(lineIndex - 1).get(numberIndex - 1);
+			String numberToBeShown = lines.get(lineIndex).get(numberIndex - 1);
 			out.println(numberToBeShown);
 		} catch (IndexOutOfBoundsException e) {
 			printMessage();
@@ -51,15 +48,15 @@ public class Crud {
 	public void modifyNumber(Map<Integer, LinkedList<String>> lines) {
 		try {
 			out.print("Enter line index: ");
-			lineIndex = Integer.parseInt(input.nextLine());
+			int lineIndex = Integer.parseInt(console.nextLine());
 			out.print("Enter number index: ");
-			numberIndex = Integer.parseInt(input.nextLine());
+			int numberIndex = Integer.parseInt(console.nextLine());
 			out.print("Number to be inserted: ");
-			numberToBeImproved = input.nextLine();
+			String numberToBeImproved = console.nextLine();
 
 			if (validator.isANumber(numberToBeImproved)) {
-				lines.get(lineIndex - 1).remove(numberIndex - 1);
-				lines.get(lineIndex - 1).add(numberIndex - 1, numberToBeImproved);
+				lines.get(lineIndex).remove(numberIndex - 1);
+				lines.get(lineIndex).add(numberIndex - 1, numberToBeImproved);
 			} else {
 				out.println("This is not a number.");
 			}
@@ -71,11 +68,11 @@ public class Crud {
 	public void removeNumber(Map<Integer, LinkedList<String>> lines) {
 		try {
 			out.print("Enter line index: ");
-			lineIndex = input.nextInt();
+			int lineIndex = console.nextInt();
 			out.print("Enter number index: ");
-			numberIndex = input.nextInt();
+			int numberIndex = console.nextInt();
 
-			lines.get(lineIndex - 1).remove(numberIndex - 1);
+			lines.get(lineIndex).remove(numberIndex - 1);
 		} catch (IndexOutOfBoundsException e) {
 			printMessage();
 		}
