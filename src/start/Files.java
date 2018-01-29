@@ -11,7 +11,7 @@ import java.util.Scanner;
 import crud.Crud;
 import validation.Validation;
 
-public class Files extends Crud {
+public class Files {
 
 	public Map<Integer, LinkedList<String>> lines = new HashMap<Integer, LinkedList<String>>();
 	public String filepath = "";
@@ -76,9 +76,9 @@ public class Files extends Crud {
 		int secondLineIndex = Integer.parseInt(console.nextLine());
 		if (!(firstLineIndex < 0) && !(firstLineIndex > lines.size())) {
 			if (!(secondLineIndex < 0) && !(secondLineIndex > lines.size())) {
-				LinkedList<String> tempLineIndex = lines.get(firstLineIndex - 1);
-				lines.put(firstLineIndex - 1, lines.get(secondLineIndex - 1));
-				lines.put(secondLineIndex - 1, tempLineIndex);
+				LinkedList<String> tempLineIndex = lines.get(firstLineIndex);
+				lines.put(firstLineIndex, lines.get(secondLineIndex));
+				lines.put(secondLineIndex, tempLineIndex);
 			} else {
 				System.out.println("Enter valid indexes!");
 			}
@@ -97,12 +97,12 @@ public class Files extends Crud {
 			int secondLineIndex = console.nextInt();
 			int secondNumberIndex = console.nextInt();
 
-			String firstValue =lines.get(firstLineIndex - 1).get(firstNumberIndex - 1);
-			String secondValue = lines.get(secondLineIndex - 1).get(secondNumberIndex - 1);
-			lines.get(firstLineIndex - 1).remove(firstNumberIndex - 1);
-			lines.get(secondLineIndex - 1).remove(secondNumberIndex - 1);
-			lines.get(firstLineIndex - 1).add(firstNumberIndex - 1, secondValue);
-			lines.get(secondLineIndex - 1).add(secondNumberIndex - 1, firstValue);
+			String firstValue = lines.get(firstLineIndex).get(firstNumberIndex - 1);
+			String secondValue = lines.get(secondLineIndex).get(secondNumberIndex - 1);
+			lines.get(firstLineIndex).remove(firstNumberIndex - 1);
+			lines.get(secondLineIndex).remove(secondNumberIndex - 1);
+			lines.get(firstLineIndex).add(firstNumberIndex - 1, secondValue);
+			lines.get(secondLineIndex).add(secondNumberIndex - 1, firstValue);
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Enter valid indexes!");
 		}
